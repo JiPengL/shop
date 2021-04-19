@@ -1,10 +1,12 @@
 package com.ixuxie.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 @Data
+@TableName("sh_login_info")
 public class LoginInfo implements Serializable {
     private static final long serialVersionUID = 2982327481637544333L;
     /**
