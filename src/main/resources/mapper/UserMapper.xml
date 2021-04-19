@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ixuxie.mappper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.ixuxie.entity.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="gender" jdbcType="INTEGER" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="eamil" jdbcType="VARCHAR" property="eamil"/>
+        <result column="birthday" jdbcType="VARCHAR" property="birthday"/>
+        <result column="safety_level" jdbcType="INTEGER" property="safetyLevel"/>
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="invite_code" jdbcType="VARCHAR" property="inviteCode"/>
+        <result column="total_integration" jdbcType="INTEGER" property="totalIntegration"/>
+        <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, nick_name, gender, phone, eamil, birthday, safety_level, avatar_url, status, 
+    total_integration, create_at, update_at ,invite_code
+  </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sh_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="findByPhone" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sh_user
+        where phone = #{phone}
+    </select>
+    <select id="findByEmail" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sh_user
+        where eamil = #{eamil}
+    </select>
+    <select id="findByInviteCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sh_user
+        where invite_code = #{inviteCode}
+    </select>
+    <insert id="insert" parameterType="com.ixuxie.entity.User" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into sh_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null"> id, </if>
+            <if test="nickName != null"> nick_name, </if>
+            <if test="gender != null"> gender, </if>
+            <if test="phone != null"> phone, </if>
+            <if test="eamil != null"> eamil, </if>
+            <if test="birthday != null"> birthday, </if>
+            <if test="safetyLevel != null"> safety_level, </if>
+            <if test="avatarUrl != null"> avatar_url, </if>
+            <if test="status != null"> status, </if>
+            <if test="totalIntegration != null"> total_integration, </if>
+            <if test="inviteCode != null"> invite_code, </if>
+            <if test="createAt != null"> create_at, </if>
+            <if test="updateAt != null"> update_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id,jdbcType=BIGINT}, </if>
+            <if test="nickName != null"> #{nickName,jdbcType=VARCHAR}, </if>
+            <if test="gender != null"> #{gender,jdbcType=INTEGER}, </if>
+            <if test="phone != null"> #{phone,jdbcType=VARCHAR}, </if>
+            <if test="eamil != null"> #{eamil,jdbcType=VARCHAR}, </if>
+            <if test="birthday != null"> #{birthday,jdbcType=VARCHAR}, </if>
+            <if test="safetyLevel != null"> #{safetyLevel,jdbcType=INTEGER}, </if>
+            <if test="avatarUrl != null"> #{avatarUrl,jdbcType=VARCHAR}, </if>
+            <if test="status != null"> #{status,jdbcType=INTEGER}, </if>
+            <if test="totalIntegration != null"> #{totalIntegration,jdbcType=INTEGER}, </if>
+            <if test="inviteCode != null"> #{inviteCode}, </if>
+            <if test="createAt != null"> #{createAt,jdbcType=TIMESTAMP}, </if>
+            <if test="updateAt != null"> #{updateAt,jdbcType=TIMESTAMP}, </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.ixuxie.entity.User">
+        update sh_user
+        <set>
+            <if test="nickName != null"> nick_name = #{nickName,jdbcType=VARCHAR}, </if>
+            <if test="gender != null"> gender = #{gender,jdbcType=INTEGER},</if>
+            <if test="phone != null"> phone = #{phone,jdbcType=VARCHAR},</if>
+            <if test="eamil != null"> eamil = #{eamil,jdbcType=VARCHAR},</if>
+            <if test="birthday != null"> birthday = #{birthday,jdbcType=VARCHAR},</if>
+            <if test="safetyLevel != null"> safety_level = #{safetyLevel,jdbcType=INTEGER},</if>
+            <if test="avatarUrl != null"> avatar_url = #{avatarUrl,jdbcType=VARCHAR},</if>
+            <if test="status != null"> status = #{status,jdbcType=INTEGER}, </if>
+            <if test="totalIntegration != null"> total_integration = #{totalIntegration,jdbcType=INTEGER}, </if>
+            <if test="inviteCode != null"> invite_code = #{invite_code}, </if>
+            <if test="createAt != null"> create_at = #{createAt,jdbcType=TIMESTAMP}, </if>
+            <if test="updateAt != null"> update_at = #{updateAt,jdbcType=TIMESTAMP}, </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="changeState">
+        update sh_user set status = #{status} where id = #{uid}
+    </update>
+
+    <select id="findPageByParams" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sh_user
+        <where>
+            <if test="id != null">and id= #{id}</if>
+            <if test="nickName != null">and nick_name= #{nickName}</if>
+            <if test="gender != null">and gender= #{gender}</if>
+            <if test="phone != null">and phone= #{phone}</if>
+            <if test="eamil != null">and eamil= #{eamil}</if>
+            <if test="birthday != null">and birthday= #{birthday}</if>
+            <if test="safetyLevel != null">and safety_level= #{safetyLevel}</if>
+            <if test="avatarUrl != null">and avatar_url= #{avatarUrl}</if>
+            <if test="status != null">and status= #{status}</if>
+            <if test="totalIntegration != null">and total_integration= #{totalIntegration}</if>
+            <if test="inviteCode != null">and invite_code= #{inviteCode}</if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            order by ${orderBy} ${sortBy}
+        </if>
+        limit #{start}, #{ends}
+    </select>
+    <select id="countByParams" resultType="java.lang.Integer">
+        select count(*) from sh_user
+        <where>
+            <if test="id != null">and id= #{id}</if>
+            <if test="nickName != null">and nick_name= #{nickName}</if>
+            <if test="gender != null">and gender= #{gender}</if>
+            <if test="phone != null">and phone= #{phone}</if>
+            <if test="eamil != null">and eamil= #{eamil}</if>
+            <if test="birthday != null">and birthday= #{birthday}</if>
+            <if test="safetyLevel != null">and safety_level= #{safetyLevel}</if>
+            <if test="avatarUrl != null">and avatar_url= #{avatarUrl}</if>
+            <if test="status != null">and status= #{status}</if>
+            <if test="totalIntegration != null">and total_integration= #{totalIntegration}</if>
+            <if test="inviteCode != null">and invite_code= #{inviteCode}</if>
+        </where>
+    </select>
+    <select id="findByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sh_user
+        where id in
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+
+    </select>
+</mapper>
