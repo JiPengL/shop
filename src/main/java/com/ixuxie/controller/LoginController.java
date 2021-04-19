@@ -5,12 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.ixuxie.config.cache.CacheTemplate;
-import com.ixuxie.constant.Constant;
 import com.ixuxie.dto.UserDto;
 import com.ixuxie.exception.ApiRuntimeException;
 import com.ixuxie.service.UserService;
 import com.ixuxie.utils.InfoCode;
 import com.ixuxie.utils.OkHttpUtil;
+import com.ixuxie.utils.WechaConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +78,7 @@ public class LoginController {
         if (jsonObject == null || !jsonObject.containsKey("openid")) {
             throw new ApiRuntimeException(InfoCode.AUTH_FAIL);
         }
-        String key = Constant.A_W_UID +  code;
+        String key = WechaConstant.A_W_UID +  code;
         try {
             String have = cacheTemplate.valueGet(key).toString();
             if (StringUtils.isNotBlank(have)){
@@ -93,11 +93,11 @@ public class LoginController {
             if(user == null){
                 throw new ApiRuntimeException(InfoCode.AUTH_FAIL ,"授权异常");
             }
-            String k = Constant.G_W_UID +  user.getId();
+            String k = WechaConstant.G_W_UID +  user.getId();
             String token = UUID.randomUUID().toString();
             cacheTemplate.valueSetAndExpire(k , token ,tokenExpire ,TimeUnit.SECONDS);
 
-            String ck = Constant.S_C_UID +  user.getId();
+            String ck = WechaConstant.S_C_UID +  user.getId();
             cacheTemplate.valueSetAndExpire(ck , "true" ,1 ,TimeUnit.HOURS);
             UserDto finalUser = user;
             return new HashMap<String, Object>(5) {

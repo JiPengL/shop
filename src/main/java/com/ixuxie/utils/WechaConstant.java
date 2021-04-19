@@ -1,9 +1,16 @@
-package com.ixuxie.constant;
+package com.ixuxie.utils;
 
 /**
  * @author
  */
 public class WechaConstant {
+
+
+    public static final String G_W_UID = "shop_uid_";
+
+    public static final String A_W_UID = "auth_code_";
+
+    public static final String S_C_UID = "show_coupon_uid_";
 
 
     /**
@@ -21,7 +28,6 @@ public class WechaConstant {
     public static String ORDER_PAY_LOCK_KEY = "order_pay_lock_key_%s";
 
     public static String ORDER_CREATE_LOCK_KEY = "order_create_lock_key_%s";
-
 
 
     /**

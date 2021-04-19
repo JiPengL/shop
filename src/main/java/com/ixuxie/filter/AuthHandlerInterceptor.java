@@ -3,9 +3,9 @@ package com.ixuxie.filter;
 import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.ixuxie.annotation.Auth;
 import com.ixuxie.config.cache.CacheTemplate;
-import com.ixuxie.constant.Constant;
 import com.ixuxie.exception.ApiRuntimeException;
 import com.ixuxie.utils.InfoCode;
+import com.ixuxie.utils.WechaConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -79,7 +79,7 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
         if (StringUtils.isBlank(uid) || StringUtils.isBlank(token)){
             return false;
         }
-        String k = Constant.G_W_UID + uid;
+        String k = WechaConstant.G_W_UID + uid;
         String ctoken = cacheTemplate.valueGet(k).toString();
         if (StringUtils.isBlank(ctoken)){
             return false;
