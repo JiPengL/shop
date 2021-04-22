@@ -1,8 +1,6 @@
 package com.ixuxie.controller;
 
 import com.alibaba.nacos.api.config.annotation.NacosValue;
-import com.ixuxie.annotation.Auth;
-import com.ixuxie.dto.UserDto;
 import com.ixuxie.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +27,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @RequestMapping("/hello")
     public Object say(){
         userService.register("nickName", 27,  "avatarUrl",  "inviteCode",  "openId");
@@ -41,8 +40,5 @@ public class UserController {
     public Object getUserById(@RequestParam("id") Long id){
         return userService.findById(id);
     }
-
-
-
 
 }

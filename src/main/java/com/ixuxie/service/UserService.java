@@ -2,34 +2,27 @@ package com.ixuxie.service;
 
 
 import com.ixuxie.dto.UserDto;
+import com.ixuxie.entity.User;
 
 import java.util.List;
 import java.util.Map;
 
 public interface UserService {
 
-    public UserDto findById(Long uid);
+    public User findById(Long id);
 
-    public UserDto findByPhone(String phone);
+    User findByName(String name);
 
-    public UserDto findByEmail(String email);
+    User findByEmail(String Email);
 
-    public UserDto findByOpenId(String openId);
+    User registerByEmail(String email);
 
-    public UserDto register(String nickName, Integer gender, String avatarUrl, String inviteCode, String openId);
+    User registerByName(String name,String pwd);
 
-    public boolean bindPhone(Long uid, String phone);
+    boolean reportByName(String name);
 
-    public boolean bindEmail(Long uid, String email);
 
-    public int refreshByOpenId(String nickName, Integer gender, String avatarUrl, String birthday, String openId);
+    UserDto findByOpenId(String openId);
 
-    public List<UserDto> findByInviteCode(String inviteCode);
-
-    public Object page(Integer pageNo, Integer pageSize, Map<String, Object> params);
-
-    public String findOpenId(Long uid);
-
-    public List<UserDto> findByIds(List<Long> ids);
-
+    UserDto register(String nickName, Integer gender, String avatarUrl, String inviteCode, String openId);
 }

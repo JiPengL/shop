@@ -1,4 +1,4 @@
-package com.ixuxie.utils;
+package com.ixuxie.utils.wx;
 
 import org.jdom.Document;
 import org.jdom.Element;

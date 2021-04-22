@@ -1,5 +1,6 @@
-package com.ixuxie.utils;
+package com.ixuxie.utils.wx;
 
+import com.ixuxie.utils.MD5;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

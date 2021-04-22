@@ -1,5 +1,6 @@
 package com.ixuxie.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ixuxie.dto.UserDto;
 import com.ixuxie.entity.User;
 import com.ixuxie.mappper.UserMapper;
@@ -8,91 +9,83 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * @Date: 2020/11/18 15:23
  */
 @Service
 public class UserServiceImpl implements UserService {
 
+
     @Autowired
     private UserMapper userMapper;
 
+    public User findById(Long id){
+        User user = userMapper.selectById(id);
+        return user;
+    }
+
     @Override
-    public UserDto findById(Long uid) {
-        User user = userMapper.findById(uid);
+    public User findByName(String name) {
+
+        QueryWrapper<User> wa = new QueryWrapper<>();
+        wa.select("id","name","gender");
+        wa.eq("name", name);
+        User user = userMapper.selectOne(wa);
+        return user;
+    }
+
+    @Override
+    public User findByEmail(String Email) {
+        return userMapper.findByEmail(Email);
+    }
+
+    @Override
+    public User registerByEmail(String email) {
+        User user = new User();
+        user.setEamil(email);
+        user.setName("大哥");
+        userMapper.insert(user);
+        return user;
+    }
+
+    @Override
+    public User registerByName(String name, String pwd) {
+        User user = new User();
+        user.setName(name);
+        user.setPwd(pwd);
+        userMapper.insert(user);
+        return user;
+    }
+
+    @Override
+    public boolean reportByName(String name){
+        QueryWrapper wa= new QueryWrapper();
+        wa.select("id");
+        wa.eq("name", name);
+        User user = userMapper.selectOne(wa);
+        if(null == user){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public UserDto findByOpenId(String openId) {
+        QueryWrapper wa= new QueryWrapper();
+        wa.eq("openId", openId);
+        User user = userMapper.selectOne(wa);
         UserDto dto = new UserDto();
         BeanUtils.copyProperties(user,dto);
         return dto;
     }
 
     @Override
-    public UserDto findByPhone(String phone) {
-        return null;
-    }
-
-    @Override
-    public UserDto findByEmail(String email) {
-        return null;
-    }
-
-    @Override
-    public UserDto findByOpenId(String openId) {
-        return null;
-    }
-
-    @Override
     public UserDto register(String nickName, Integer gender, String avatarUrl, String inviteCode, String openId) {
-        User us = new User();
-        us.setNickName(nickName);
-        us.setGender(gender);
-        us.setAvatarUrl(avatarUrl);
-        us.setInviteCode(inviteCode);
-        userMapper.insert(us);
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(us,userDto);
-        return userDto;
-    }
-
-    @Override
-    public boolean bindPhone(Long uid, String phone) {
-        return false;
-    }
-
-    @Override
-    public boolean bindEmail(Long uid, String email) {
-        return false;
-    }
-
-    @Override
-    public int refreshByOpenId(String nickName, Integer gender, String avatarUrl, String birthday, String openId) {
-        return 0;
-    }
-
-    @Override
-    public List<UserDto> findByInviteCode(String inviteCode) {
-        return null;
-    }
-
-    @Override
-    public Object page(Integer pageNo, Integer pageSize, Map<String, Object> params) {
-        return null;
-    }
-
-    @Override
-    public String findOpenId(Long uid) {
-        return null;
-    }
-
-    @Override
-    public List<UserDto> findByIds(List<Long> ids) {
         return null;
     }
 
 
-/*
+    /*
     @Autowired
     private UserDao userDao;
 

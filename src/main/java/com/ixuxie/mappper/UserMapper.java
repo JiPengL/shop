@@ -6,5 +6,7 @@ import com.ixuxie.entity.User;
 
 public interface UserMapper extends BaseMapper<User> {
 
-    User findById(Long uid);
+    User findByEmail(String email);
+
+
 }

@@ -1,8 +1,7 @@
-package com.ixuxie.config.cache.impl;
+package com.ixuxie.config.cache;
 
-import com.ixuxie.config.cache.CacheManager;
-import com.ixuxie.config.cache.ICache;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -13,8 +12,10 @@ import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 @Component
-@Slf4j
-public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
+public class GuavaCache<K, V, HK>  {
+
+
+    public static Logger log= LoggerFactory.getLogger(GuavaCache.class);
 
     private CacheManager cacheManager;
 
@@ -26,28 +27,27 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         cacheManager = CacheManager.getInstance(environment);
     }
 
-    @Override
     public void valueSet(K key, V value) {
         cacheManager.getCache().put(key, value);
     }
 
-    @Override
+    
     public V valueGet(Object key) {
         return (V) cacheManager.getCache().getIfPresent(key);
     }
 
-    @Override
+    
     public Boolean valueSetAndExpire(K key, V value, long timeout, TimeUnit unit) {
         cacheManager.getCache().put(key, value);
         return cacheManager.expire(key, timeout, unit);
     }
 
-    @Override
+    
     public void setAdd(K key, V... values) {
 
         try {
             Set<V> set = (Set<V>) cacheManager.getCache().get(key, new Callable() {
-                @Override
+                
                 public Object call() throws Exception {
                     return new CopyOnWriteArraySet<V>();
                 }
@@ -62,7 +62,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
 
     }
 
-    @Override
+    
     public void setRemove(K key, Object... values) {
         Set<V> set = (Set<V>) cacheManager.getCache().getIfPresent(key);
         if (set != null) {
@@ -72,7 +72,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         }
     }
 
-    @Override
+    
     public Boolean setIsMember(K key, Object o) {
         Set<V> set = (Set<V>) cacheManager.getCache().getIfPresent(key);
         if (set != null) {
@@ -81,13 +81,13 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return false;
     }
 
-    @Override
+    
     public Set<V> setMembers(K key) {
         Set<V> set = (Set<V>) cacheManager.getCache().getIfPresent(key);
         return set;
     }
 
-    @Override
+    
     public Long setSize(K key) {
         Set<V> set = (Set<V>) cacheManager.getCache().getIfPresent(key);
         if (set != null) {
@@ -96,12 +96,12 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return 0L;
     }
 
-    @Override
+    
     public void listLeftPush(K key, V value) {
         List<V> list = null;
         try {
             list = (List<V>) cacheManager.getCache().get(key, new Callable() {
-                @Override
+                
                 public Object call() throws Exception {
                     return Collections.synchronizedList(new LinkedList<V>());
                 }
@@ -112,12 +112,12 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         }
     }
 
-    @Override
+    
     public void listRightPush(K key, V value) {
         List<V> list = null;
         try {
             list = (List<V>) cacheManager.getCache().get(key, new Callable() {
-                @Override
+                
                 public Object call() throws Exception {
                     return Collections.synchronizedList(new LinkedList<V>());
                 }
@@ -128,7 +128,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         }
     }
 
-    @Override
+    
     public V listLeftPop(K key) {
         List<V> list = (List<V>) cacheManager.getCache().getIfPresent(key);
         if (list != null) {
@@ -137,7 +137,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public V listRightPop(K key) {
         List<V> list = (List<V>) cacheManager.getCache().getIfPresent(key);
         if (list != null) {
@@ -146,7 +146,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public List<V> listRange(K key, long start, long end) {
         List<V> list = (List<V>) cacheManager.getCache().getIfPresent(key);
         if (list != null) {
@@ -167,7 +167,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public void listRemove(K key, long count, Object value) {
         List<V> list = (List<V>) cacheManager.getCache().getIfPresent(key);
         List<Integer> indexs = new ArrayList<>();
@@ -192,7 +192,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         }
     }
 
-    @Override
+    
     public Long listSize(K key) {
         List<V> list = (List<V>) cacheManager.getCache().getIfPresent(key);
         if (list != null) {
@@ -201,12 +201,12 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return 0L;
     }
 
-    @Override
+    
     public void hashPut(K key, HK hashKey, V value) {
         Map<HK, V> map = null;
         try {
             map = (Map<HK, V>) cacheManager.getCache().get(key, new Callable() {
-                @Override
+                
                 public Object call() throws Exception {
                     return new ConcurrentHashMap<HK, V>();
                 }
@@ -217,7 +217,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         }
     }
 
-    @Override
+    
     public V hashGet(K key, Object hashKey) {
         Map<HK, V> map = (Map<HK, V>) cacheManager.getCache().getIfPresent(key);
         if (map != null) {
@@ -226,7 +226,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public Boolean hashHasKey(K key, Object hashKey) {
         Map<HK, V> map = (Map<HK, V>) cacheManager.getCache().getIfPresent(key);
         if (map != null) {
@@ -235,7 +235,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return false;
     }
 
-    @Override
+    
     public Long hashDelete(K key, Object... hashKeys) {
         Map<HK, V> map = (Map<HK, V>) cacheManager.getCache().getIfPresent(key);
         if (map != null) {
@@ -246,13 +246,13 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public Map<HK, V> hashEntries(K key) {
         Map<HK, V> map = (Map<HK, V>) cacheManager.getCache().getIfPresent(key);
         return map;
     }
 
-    @Override
+    
     public List<V> hashValues(K key) {
         Map<HK, V> map = null;
         map = (Map<HK, V>) cacheManager.getCache().getIfPresent(key);
@@ -262,7 +262,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public Set<HK> hashKeys(K key) {
         Map<HK, V> map = null;
         map = (Map<HK, V>) cacheManager.getCache().getIfPresent(key);
@@ -272,7 +272,7 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public Long hashSize(K key) {
         Map<HK, V> map = (Map<HK, V>) cacheManager.getCache().getIfPresent(key);
         if (map != null) {
@@ -281,39 +281,39 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return 0L;
     }
 
-    @Override
+    
     public Boolean delete(K key) {
         cacheManager.getCache().invalidate(key);
         return true;
     }
 
-    @Override
+    
     public Long delete(Collection<K> keys) {
         cacheManager.getCache().invalidateAll(keys);
         return Long.valueOf(keys.size());
     }
 
-    @Override
+    
     public Boolean expire(K key, long timeout, TimeUnit unit) {
         return cacheManager.expire(key, timeout, unit);
     }
 
-    @Override
+    
     public Boolean expireAt(K key, Date date) {
         return cacheManager.expireAt(key, date);
     }
 
-    @Override
+    
     public Long getExpire(K key) {
         return cacheManager.getExpire(key);
     }
 
-    @Override
+    
     public Long getExpire(K key, TimeUnit timeUnit) {
         return cacheManager.getExpire(key, timeUnit);
     }
 
-    @Override
+    
     public Set<K> keys(K pattern) {
         String keys = (String) pattern;
         if ("*".equals(pattern)) {
@@ -326,12 +326,12 @@ public class GuavaCacheImpl<K, V, HK> implements ICache<K, V, HK> {
         return null;
     }
 
-    @Override
+    
     public Boolean hasKey(K key) {
         return cacheManager.getCache().getIfPresent(key) != null ? true : false;
     }
 
-    @Override
+    
     public void cleanUp() {
         cacheManager.getCache().cleanUp();
     }

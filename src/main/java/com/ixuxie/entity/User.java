@@ -1,5 +1,7 @@
 package com.ixuxie.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -9,14 +11,21 @@ import java.util.Date;
 @Data
 @TableName("sh_user")
 public class User implements Serializable {
+
     private static final long serialVersionUID = 1136926278128056705L;
 
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
      * 昵称
      */
-    private String nickName;
+    private String name;
+
+    /**
+     * 昵称
+     */
+    private String pwd;
 
     /**
      * 性别，0男，1女
@@ -54,23 +63,9 @@ public class User implements Serializable {
     private Integer status;
 
     /**
-     * 累计积分
-     */
-    private Integer totalIntegration;
-
-    /**
      * 被邀请码
      */
     private String inviteCode;
 
-    /**
-     * 创建时间
-     */
-    private Date createAt;
-
-    /**
-     * 更新时间
-     */
-    private Date updateAt;
 
 }

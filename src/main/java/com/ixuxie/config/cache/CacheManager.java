@@ -2,8 +2,9 @@ package com.ixuxie.config.cache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
 import java.util.Date;
@@ -14,8 +15,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-@Slf4j
 public class CacheManager {
+
+    public static Logger log= LoggerFactory.getLogger(CacheManager.class);
 
     private static volatile CacheManager instance;
 
@@ -31,11 +33,11 @@ public class CacheManager {
             throw new IllegalStateException("Already initialized.");
         }
         //cache的最大size
-        long maximumSize = environment.getProperty("disco.cache.local.maximum-size", Long.class, 3000L);
+        long maximumSize = environment.getProperty("ixuxie.cache.local.maximum-size", Long.class, 3000L);
         //读写后多久expire
-        long expireAfterAccess = environment.getProperty("disco.cache.local.expire-after-access", Long.class, 3600L);
+        long expireAfterAccess = environment.getProperty("ixuxie.cache.local.expire-after-access", Long.class, 3600L);
         //配置同时可以有多少个写线程同时写
-        int concurrencyLevel = environment.getProperty("disco.cache.local.concurrency-level", Integer.class, 4);
+        int concurrencyLevel = environment.getProperty("ixuxie.cache.local.concurrency-level", Integer.class, 4);
         cache = CacheBuilder.newBuilder()
                 .maximumSize(maximumSize)
                 .expireAfterAccess(expireAfterAccess, TimeUnit.SECONDS)
@@ -71,7 +73,7 @@ public class CacheManager {
 
     public Boolean expire(Object key, long timeout, TimeUnit unit) {
         try {
-            long rawTimeout = unit.toSeconds(timeout);
+            long rawTimeout = unit.toMillis(timeout);
             long expireTime = System.currentTimeMillis()+rawTimeout;
             cacheKeyMap.put(key, expireTime);
             timer.schedule(new TimeoutTask(key, expireTime), rawTimeout, TimeUnit.MILLISECONDS);

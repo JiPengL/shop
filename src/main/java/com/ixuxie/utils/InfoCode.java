@@ -13,7 +13,22 @@ public enum InfoCode {
     AUTH_FAIL(1002,"用户授权失败！"),
     AUTH_PHONE_FAIL(1003,"用户授权手机号失败！"),
 
+    EMAIL_SEND_FAIL(1004,"邮件发送失败！"),
+    EMAIL_HAS_REGIEST(1005,"邮箱已注册！"),
+    NAME_HAS_REGIEST(1006,"账号名称已注册！"),
+    PWD_ERROR(1007,"密码不正确！"),
+
+    NOT_USER(1001,"用户不存在！"),
+
     ERROR(1099,"非法操作！"),
+
+
+
+
+
+
+
+
 
     PARAM_ERROR(2000,"请求参数缺失"),
 

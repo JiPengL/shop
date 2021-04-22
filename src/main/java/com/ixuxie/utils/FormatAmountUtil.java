@@ -1,6 +1,7 @@
 package com.ixuxie.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.ixuxie.utils.wx.WechatUtil;
 
 import java.math.BigDecimal;
 import java.util.Map;

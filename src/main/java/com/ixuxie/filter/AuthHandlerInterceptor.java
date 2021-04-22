@@ -2,10 +2,10 @@ package com.ixuxie.filter;
 
 import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.ixuxie.annotation.Auth;
-import com.ixuxie.config.cache.CacheTemplate;
+import com.ixuxie.config.cache.GuavaCache;
 import com.ixuxie.exception.ApiRuntimeException;
 import com.ixuxie.utils.InfoCode;
-import com.ixuxie.utils.WechaConstant;
+import com.ixuxie.utils.wx.WechaConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -35,7 +35,7 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
 
 
     @Autowired
-    private CacheTemplate cacheTemplate;
+    private GuavaCache guavaCache;
 
 
     @Override
@@ -80,12 +80,12 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
             return false;
         }
         String k = WechaConstant.G_W_UID + uid;
-        String ctoken = cacheTemplate.valueGet(k).toString();
+        String ctoken = guavaCache.valueGet(k).toString();
         if (StringUtils.isBlank(ctoken)){
             return false;
         }
         if (ctoken.equalsIgnoreCase(token)){
-            cacheTemplate.valueSetAndExpire(k,ctoken,tokenExpire, TimeUnit.SECONDS);
+            guavaCache.valueSetAndExpire(k,ctoken,tokenExpire, TimeUnit.SECONDS);
             return true;
         }
         return false;
