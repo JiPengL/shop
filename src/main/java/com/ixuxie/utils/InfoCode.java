@@ -1,8 +1,5 @@
 package com.ixuxie.utils;
 
-/**
- * @author zhangmi
- */
 
 public enum InfoCode {
 

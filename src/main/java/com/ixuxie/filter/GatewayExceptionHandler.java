@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
- * @author wuhui
  * @date 2019/6/3 17:21
  */
 @ControllerAdvice

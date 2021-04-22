@@ -1,8 +1,5 @@
 package com.ixuxie.utils.wx;
 
-/**
- * @author
- */
 public class WechaConstant {
 
 

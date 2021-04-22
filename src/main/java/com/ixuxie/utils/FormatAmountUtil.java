@@ -7,9 +7,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * @author zhangmi
- */
 public class FormatAmountUtil {
 
     private static BigDecimal rate = new BigDecimal(100);

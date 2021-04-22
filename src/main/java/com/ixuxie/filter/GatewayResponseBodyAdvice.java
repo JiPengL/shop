@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author wuhui
  * @date 2019/6/3 17:00
  */
 @ControllerAdvice

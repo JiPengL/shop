@@ -15,9 +15,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-/**
- * @author zhangmi
- */
 @Slf4j
 @Data
 public class OssUtil {

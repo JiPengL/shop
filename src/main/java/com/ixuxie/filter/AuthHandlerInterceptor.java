@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author wuhui
  * @date 2019/6/4 9:42
  */
 @Component

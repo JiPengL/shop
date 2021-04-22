@@ -11,9 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author zhangmi
- */
 public class OkHttpUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(OkHttpUtil.class);
